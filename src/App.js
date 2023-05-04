@@ -6,23 +6,23 @@ import Home from "./components/Home";
 import React, { useState } from "react";
 
 function App() {
-  const [todoArray, setTodoArray] = useState([]);
+  const [todoArray, setTodoArray] = useState([
+  ]);
   const [todo, setTodo] = useState("");
   const [error, setError] = useState(false);
   // const [errorTodo, setErrorTodo] = useState(false);
-  const [id, setId] = useState("");
-  const [edit, setEdit] = useState(false);
+  const [todoEdit, setTodoToEdit] = useState("");
 
-  const deleteTodo = (id) => {
-    const removeTodo = todoArray.filter((todo) => todo.id !== id);
-    setTodoArray(removeTodo);
+  const deleteTodo = (t) => {
+    // const removeTodo = todoArray.filter((todo) => todo.id !== t.id);
+    setTodoArray(todoArray.filter((todo) => todo.id !== t.id));
   };
 
-  const editTodo = (id) => {
-    setEdit(true);
-    setId(id);
-    let editTodo = todoArray.find((todo) => todo.id === id);
-    setTodo(editTodo.content);
+  const editTodo = (t) => {
+    setTodoToEdit(t);
+
+    // let editTodo = todoArray.find((todo) => todo.id === id);
+    setTodo(t.content);
   };
 
   const changeTodo = (e) => {
@@ -30,47 +30,45 @@ function App() {
   };
 
   const saveTodo = (e) => {
+
+    if (todo.trim() === "") {
+      setError(true);
+      setTodo("");
+      return;
+    }
+
     var newTodo = {
       id: new Date().getTime(),
       content: todo,
     };
-    console.log("valeur du todo :", todo);
-    if (edit) {
-      let tempTasks = todoArray.map((todo) => {
-        let currentTask = {};
-        todo.id === id
-          ? (currentTask = { ...todo, content: newTodo.content })
-          : (currentTask = todo);
 
-        return currentTask;
-      });
-
-      setTodoArray(tempTasks);
+    if(!!todoEdit) {
+      console.log("update")
+      const new_array = todoArray.map((item) => {
+        if(item.id === todoEdit.id) {
+          return newTodo;
+        } else {
+          return item;
+        }
+      })
+      setTodoArray(new_array);
+      setTodoToEdit(null)
       setTodo("");
-    } else if (todo) {
-      setEdit(false);
-      setTodoArray([newTodo, ...todoArray]);
-      setError(false);
-      setTodo("");
+    } else {
+      setTodoArray([...todoArray, newTodo]);
+      setTodo("")
     }
-    if (todo === "") {
-      setError(true);
-      setTodo("");
-    }
-    console.log("tableau :", todoArray);
+    
   };
 
   return (
     // <Routes>
     <>
       <Home
-        todoArray={todoArray}
-        setTodoArray={setTodoArray}
         todo={todo}
         changeTodo={changeTodo}
         handleSave={saveTodo}
         error={error}
-        // erroTodo={errorTodo}
       />
       <TodoList
         todoArray={todoArray}

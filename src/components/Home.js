@@ -1,6 +1,6 @@
 import React from "react";
 import "../assets/home.css";
-function Home({handleSave, todo, changeTodo, error}) {
+function  Home({handleSave, todo, changeTodo, error}) {
   return (
     <div className="home">
       <h1>Todo List</h1>

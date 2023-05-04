@@ -5,9 +5,9 @@ import { faDeleteLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function TodoItem({ todo, deleteTodo, editTodo }) {
-  const processDelete = () => {
-    deleteTodo(todo.id);
-  };
+//   const processDelete = () => {
+//     deleteTodo(todo.id);
+//   };
   return (
     <li className="body__input__value__save">
       <div className="input__value__save">{todo.content}</div>
@@ -16,12 +16,13 @@ function TodoItem({ todo, deleteTodo, editTodo }) {
         <FontAwesomeIcon
           icon={faPen}
           onClick={() => {
-            editTodo(todo.id);
+            editTodo(todo);
+            // editTodo(todo.id);
           }}
         />
       </button>
       <button className="delete">
-        <FontAwesomeIcon icon={faDeleteLeft} onClick={processDelete} />
+        <FontAwesomeIcon icon={faDeleteLeft} onClick={() => deleteTodo(todo)} />
       </button>
     </li>
   );
